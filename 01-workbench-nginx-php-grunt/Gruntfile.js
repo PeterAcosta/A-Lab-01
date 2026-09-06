@@ -12,6 +12,7 @@ module.exports = function(grunt) {
 
     // var PHP_ORIGIN='sources/PHP/*.php'
     // var PHP_FILE='www/_test.php';
+	var PHP_FUNCTIONS_DIR = 'sources/PHP-functions/';
 	var PHP_FUNCTIONS_FILE = 'www/_functions.php';
 
     // Project configuration. ------------------------------------------------------------------------------------------
@@ -91,7 +92,7 @@ module.exports = function(grunt) {
                 // PHP-functions
                 files: [{
                     expand: true,
-                    cwd: 'sources/PHP-functions/',
+                    cwd: PHP_FUNCTIONS_DIR,
                     src: '*.php',
                     dest: '<%= auxiliar.path %>/PHP-functions/'
                 }]
