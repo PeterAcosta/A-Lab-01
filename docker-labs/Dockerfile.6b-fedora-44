@@ -1,0 +1,40 @@
+
+ARG IMAGE_NAME="fedora:44"
+FROM ${IMAGE_NAME}
+ARG IMAGE_NAME
+# FROM fedora:44
+
+ENV THIS_IMAGE=${IMAGE_NAME}
+
+# Copia el archivo entrypoint.sh a la imagen
+COPY entrypoint.02.sh /usr/local/bin/entrypoint.sh
+
+RUN dnf -y update && \
+    echo -e "\nPS1='{ \033[01;33m\]$THIS_IMAGE\[\033[00m\] } [\[\033[1;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]] \$ '" >> /root/.bashrc && \
+    echo -e "alias ls='ls --color=auto' \nalias ll='ls -alF' \nalias lk='ls -l'" >> /root/.bashrc &&\
+    chmod +x /usr/local/bin/entrypoint.sh && \
+    curl -o /etc/yum.repos.d/konimex-neofetch-epel-7.repo https://copr.fedorainfracloud.org/coprs/konimex/neofetch/repo/epel-7/konimex-neofetch-epel-7.repo && \
+    dnf -y install fastfetch && \
+    dnf -y install mc && \
+    dnf -y install figlet
+
+
+ 
+# Define el comando de entrada predeterminado
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ 
+# Mantiene el contenedor activo
+CMD ["sleep", "infinity"]
+
+
+
+# image-4b-fedora-39:4b
+# 4b-fedora-39
+
+# docker build --tag image-4b-fedora-39:4b -f Dockerfile.4b-fedora-39 .
+# docker history -H image-4b-fedora-39:4b --no-trunc
+
+# docker run --name 4b-fedora-39 image-4b-fedora-39:4b
+# docker exec -ti 4b-fedora-39 bash
+
+# docker rm -f 4b-fedora-39 && docker rmi image-4b-fedora-39:4b

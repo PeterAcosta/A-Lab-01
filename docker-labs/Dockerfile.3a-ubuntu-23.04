@@ -1,0 +1,41 @@
+ARG IMAGE_NAME="ubuntu:lunar-20230415"
+FROM ${IMAGE_NAME}
+ARG IMAGE_NAME
+
+ENV THIS_IMAGE=${IMAGE_NAME}
+
+COPY entrypoint.01.sh /usr/local/bin/entrypoint.sh
+
+# Cambiar los repositorios a old-releases para imágenes EOL
+RUN sed -i -e 's/archive.ubuntu.com/old-releases.ubuntu.com/g' \
+	-e 's/security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list && \
+	apt-get update && \
+	DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+	figlet \
+	neofetch \
+	mc && \
+	rm -rf /var/lib/apt/lists/* && \
+	echo "\nPS1='{ \[\033[01;33m\]$THIS_IMAGE\[\033[00m\] } [\[\033[1;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]] \$ '" >> /root/.bashrc && \
+	echo "alias ls='ls --color=auto'\nalias ll='ls -alF'\nalias lk='ls -l'" >> /root/.bashrc && \
+	chmod +x /usr/local/bin/entrypoint.sh 
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["sleep", "infinity"]
+
+
+
+# image-2c-ubuntu-23.04:2c
+# 2c-ubuntu-23.04
+
+# docker build --tag image-2c-ubuntu-23.04:2c -f Dockerfile.2c-ubuntu-23.04 .
+# docker history -H image-2c-ubuntu-23.04:2c --no-trunc
+
+# docker run --name 2c-ubuntu-23.04 image-2c-ubuntu-23.04:2c 
+# docker exec -ti 2c-ubuntu-23.04 bash
+
+# docker rm -f 2c-ubuntu-23.04 && docker rmi image-2c-ubuntu-23.04:2c
+
+
+
+
+

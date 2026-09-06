@@ -1,0 +1,41 @@
+ARG IMAGE_NAME="centos:centos7.9.2009"
+FROM ${IMAGE_NAME}
+ARG IMAGE_NAME
+
+ENV THIS_IMAGE=${IMAGE_NAME}
+
+# Copia el archivo entrypoint.sh a la imagen
+COPY entrypoint.01.sh /usr/local/bin/entrypoint.sh
+
+# 1. Apuntar los repositorios base de CentOS 7 a vault.centos.org
+# 2. Instalar epel-release y actualizar repositorios
+# 3. Descargar e instalar neofetch, figlet y mc
+RUN sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/CentOS-*.repo && \
+	sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/CentOS-*.repo && \
+	sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/CentOS-*.repo && \
+	yum -y install epel-release && \
+	sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/epel*.repo || true && \
+	curl -o /etc/yum.repos.d/konimex-neofetch-epel-7.repo https://copr.fedorainfracloud.org/coprs/konimex/neofetch/repo/epel-7/konimex-neofetch-epel-7.repo && \
+	yum -y update && \
+	yum -y install neofetch figlet mc && \
+	yum clean all && \
+	echo -e "\nPS1='{ \[\033[01;33m\]$THIS_IMAGE\[\033[00m\] } [\[\033[1;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]] \$ '" >> /root/.bashrc && \
+	echo -e "alias ls='ls --color=auto'\nalias ll='ls -alF'\nalias lk='ls -l'" >> /root/.bashrc && \
+	chmod +x /usr/local/bin/entrypoint.sh
+
+# Define el punto de entrada predeterminado
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# Mantiene el contenedor activo
+CMD ["sleep", "infinity"]
+
+# image-3a-centos-7.9.2009:3a
+# 3a-centos-7.9.2009
+
+# docker build --tag image-3a-centos-7.9.2009:3a -f Dockerfile.3a-centos-7.9.2009 .
+# docker history -H image-3a-centos-7.9.2009:3a --no-trunc
+
+# docker run --name 3a-centos-7.9.2009 image-3a-centos-7.9.2009:3a
+# docker exec -ti 3a-centos-7.9.2009 bash
+
+# docker rm -f 3a-centos-7.9.2009 && docker rmi image-3a-centos-7.9.2009:3a

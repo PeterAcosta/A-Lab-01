@@ -1,0 +1,45 @@
+ARG IMAGE_NAME="debian:buster-20230411-slim"
+FROM ${IMAGE_NAME}
+ARG IMAGE_NAME
+#FROM debian:buster-20230411-slim
+
+ENV THIS_IMAGE=${IMAGE_NAME}
+
+# Copia el archivo entrypoint.sh a la imagen
+COPY entrypoint.01.sh /usr/local/bin/entrypoint.sh
+
+RUN sed -i 's/deb.debian.org/archive.debian.org/g' /etc/apt/sources.list && \
+	sed -i '/security.debian.org/d' /etc/apt/sources.list && \
+	sed -i '/buster-updates/d' /etc/apt/sources.list && \
+	apt-get update
+
+
+RUN apt-get update && \
+apt-get install figlet -y && \
+	apt-get install neofetch -y  && \
+	apt-get install -y mc && \    
+	echo "\nPS1='{ \033[01;33m\]$THIS_IMAGE\[\033[00m\] } [\[\033[1;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]] \$ '" >> /root/.bashrc && \
+	echo "alias ls='ls --color=auto' \nalias ll='ls -alF' \nalias lk='ls -l'" >> /root/.bashrc &&\
+	chmod +x /usr/local/bin/entrypoint.sh 
+
+
+# Define el comando de entrada predeterminado
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# Define el comando predeterminado si no se proporciona ninguno al iniciar el contenedor
+# Este hace que el contenedor permanezca vivo indefinidamente, lo que permite la ejecución de comandos dentro del contenedor.
+CMD ["sleep", "infinity"]
+
+
+
+
+
+
+# docker build --tag image-2a-debian-10-buster:2a -f Dockerfile.2a-debian-10-buster .
+# docker history -H image-2a-debian-10-buster:2a --no-trunc
+
+# docker run --name 2a-debian-10-buster image-2a-debian-10-buster:2a
+# docker exec -ti 2a-debian-10-buster bash
+
+# docker rm -f 2a-debian-10-buster && docker rmi image-2a-debian-10-buster:2a 
+

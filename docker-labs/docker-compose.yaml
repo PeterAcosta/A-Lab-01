@@ -1,0 +1,143 @@
+# version: "3.9" ->obsolete since docker-compose v2.0
+
+services:
+
+  os-1a-alpine:
+    container_name: 1a-alpine-3.17
+    image: image-1a-alpine-3.17:1a
+
+    #  ( opciones de build: ) 
+    #  ( opcion 1 , si pongo un puntito va a buscar un dockerfile )
+    # build: .
+
+    #  ( opcion 2 , indicamos el contexto )
+    build:
+      context: .   #( path )
+      dockerfile: Dockerfile.1a-alpine-3.17
+    networks:
+      - os-nx-linux-network
+
+  os-2a-debian-10-buster:
+    container_name: 2a-debian-10-buster
+    image: image-2a-debian-10-buster:2a
+    build:
+      context: .  
+      dockerfile: Dockerfile.2a-debian-10-buster
+    networks:
+      - os-nx-linux-network
+
+  os-2b-debian-11-bullseye:
+    container_name: 2b-debian-11-bullseye
+    image: image-2b-debian-11-bullseye:2b
+    build:
+      context: .  
+      dockerfile: Dockerfile.2b-debian-11-bullseye
+    networks:
+      - os-nx-linux-network
+
+  os-2c-debian-12-bookworm:
+    container_name: 2c-debian-12-bookworm
+    image: image-2c-debian-12-bookworm:2c
+    build:
+      context: .  
+      dockerfile: Dockerfile.2c-debian-12-bookworm
+    networks:
+      - os-nx-linux-network
+
+  os-2d-debian-13-trixie:
+    container_name: 2d-debian-13-trixie
+    image: image-2d-debian-13-trixie:2d
+    build:
+      context: .  
+      dockerfile: Dockerfile.2d-debian-13-trixie
+    networks:
+      - os-nx-linux-network
+
+
+
+
+  os-3a-ubuntu-23-04:
+    container_name: 3a-ubuntu-23.04
+    image: image-3a-ubuntu-23.04:3a
+    build:
+      context: .  
+      dockerfile: Dockerfile.3a-ubuntu-23.04
+    networks:
+      - os-nx-linux-network
+
+  os-3b-ubuntu-24-04:
+    container_name: 3b-ubuntu-24.04
+    image: image-3b-ubuntu-24.04:3b
+    build:
+      context: .  
+      dockerfile: Dockerfile.3b-ubuntu-24.04
+    networks:
+      - os-nx-linux-network
+
+  os-3c-ubuntu-26-04:
+    container_name: 3c-ubuntu-26.04
+    image: image-3c-ubuntu-26.04:3c
+    build:
+      context: .  
+      dockerfile: Dockerfile.3c-ubuntu-26.04
+    networks:
+      - os-nx-linux-network
+
+
+
+
+
+
+  os-4a-centos-7-9-2009:
+    container_name: 4a-centos-7.9.2009
+    image: image-4a-centos-7.9.2009:4a
+    build:
+      context: .  
+      dockerfile: Dockerfile.4a-centos-7.9.2009
+    networks:
+      - os-nx-linux-network
+
+  os-5a-redhat-ubi8:
+    container_name: 5a-redhat-ubi8
+    image: image-5a-redhat-ubi8:5a
+    build:
+      context: .  
+      dockerfile: Dockerfile.5a-redhat-ubi8-8.7
+    networks:
+      - os-nx-linux-network
+
+  os-6a-fedora-39:
+    container_name: 6a-fedora-39
+    image: image-6a-fedora-39:6a
+    build:
+      context: .  
+      dockerfile: Dockerfile.6a-fedora-39
+    networks:
+      - os-nx-linux-network
+
+  os-6b-fedora-44:
+    container_name: 6b-fedora-44
+    image: image-6b-fedora-44:6b
+    build:
+      context: .  
+      dockerfile: Dockerfile.6b-fedora-44
+    networks:
+      - os-nx-linux-network
+
+
+
+
+  os-7a-amazon-linux-2023:
+    container_name: 7a-amazon-linux-2023
+    image: image-7a-amazon-linux-2023:7a
+    build:
+      context: .  
+      dockerfile: Dockerfile.7a-amazon-linux-2023
+    networks:
+      - os-nx-linux-network
+
+
+
+networks:
+  os-nx-linux-network:
+    name: os-linux-hub

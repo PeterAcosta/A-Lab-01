@@ -1,0 +1,45 @@
+ARG IMAGE_NAME="ubuntu:24.04"
+FROM ${IMAGE_NAME}
+ARG IMAGE_NAME
+
+ENV THIS_IMAGE=${IMAGE_NAME}
+
+# Copiar script de entrypoint
+COPY entrypoint.01.sh /usr/local/bin/entrypoint.sh
+
+# Actualizar, habilitar el repositorio universe e instalar paquetes
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    software-properties-common && \
+    add-apt-repository -y universe && \
+    apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    figlet \
+    neofetch \
+    mc && \
+    rm -rf /var/lib/apt/lists/* && \
+    echo "\nPS1='{ \[\033[01;33m\]\$THIS_IMAGE\[\033[00m\] } [\[\033[1;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]] \$ '" >> /root/.bashrc && \
+    echo "alias ls='ls --color=auto'\nalias ll='ls -alF'\nalias lk='ls -l'" >> /root/.bashrc && \
+    chmod +x /usr/local/bin/entrypoint.sh
+
+# Define el comando de entrada predeterminado
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# Comando para mantener el contenedor activo
+CMD ["sleep", "infinity"]
+
+# image-2c-ubuntu-23.04:2c
+# 2c-ubuntu-23.04
+
+# docker build --tag image-2c-ubuntu-23.04:2c -f Dockerfile.2c-ubuntu-23.04 .
+# docker history -H image-2c-ubuntu-23.04:2c --no-trunc
+
+# docker run --name 2c-ubuntu-23.04 image-2c-ubuntu-23.04:2c 
+# docker exec -ti 2c-ubuntu-23.04 bash
+
+# docker rm -f 2c-ubuntu-23.04 && docker rmi image-2c-ubuntu-23.04:2c
+
+
+
+
+

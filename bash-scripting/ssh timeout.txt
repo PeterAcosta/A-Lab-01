@@ -1,0 +1,5 @@
+# agregar esta linea al final del archivo  sudo vim  /etc/ssh/ssh_config
+
+
+# Peter say
+ServerAliveInterval 60

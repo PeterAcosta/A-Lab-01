@@ -1,0 +1,36 @@
+ARG IMAGE_NAME="debian:trixie-slim"
+FROM ${IMAGE_NAME}
+ARG IMAGE_NAME
+
+ENV THIS_IMAGE=${IMAGE_NAME}
+
+# Actualizar e instalar paquetes desde los repositorios oficiales de Debian 12
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    figlet \
+    fastfetch \
+    mc && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copiar entrypoint
+COPY entrypoint.02.sh /usr/local/bin/entrypoint.sh
+
+# Configurar prompt usando la variable $THIS_IMAGE, alias y permisos
+RUN echo "\nPS1='{ \033[01;33m\]\$THIS_IMAGE\[\033[00m\] } [\[\033[1;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]] \$ '" >> /root/.bashrc && \
+    echo "alias ls='ls --color=auto'\nalias ll='ls -alF'\nalias lk='ls -l'" >> /root/.bashrc && \
+    chmod +x /usr/local/bin/entrypoint.sh
+
+# Define el comando de entrada predeterminado
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# Comando predeterminado para mantener el contenedor activo
+CMD ["sleep", "infinity"]
+
+# docker build --tag image-2b-debian-11-bullseye:2b -f Dockerfile.2b-debian-11-bullseye .
+# docker history -H image-2b-debian-11-bullseye:2b --no-trunc
+
+# docker run --name 2b-debian-11-bullseye image-2b-debian-11-bullseye:2b
+# docker exec -ti 2b-debian-11-bullseye bash
+
+# docker rm -f 2b-debian-11-bullseye && docker rmi image-2b-debian-11-bullseye:2b
+
