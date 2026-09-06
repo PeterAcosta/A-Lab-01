@@ -91,7 +91,7 @@ module.exports = function(grunt) {
                 // PHP-functions
                 files: [{
                     expand: true,
-                    cwd: 'sources/PHP/',
+                    cwd: 'sources/PHP-functions/',
                     src: '*.php',
                     dest: '<%= auxiliar.path %>/PHP-functions/'
                 }]
