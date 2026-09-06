@@ -1,0 +1,24 @@
+## Logrotate nginx del Peter junio 2023
+## este es el archivo:  /etc/logrotate.d/nginx
+## para chequear la configuracion ejecutar :  logrotate -f /etc/logrotate.conf
+
+
+/var/log/nginx/*.log {
+  daily
+  missingok
+  rotate 9
+  maxsize 10M
+  minsize 7M
+  # minage 7
+  maxage 120
+  compress
+  delaycompress
+  notifempty
+  create 640 nginx adm
+  sharedscripts
+  postrotate
+      if [ -f /var/run/nginx.pid ]; then
+          kill -USR1 `cat /var/run/nginx.pid`
+      fi
+  endscript
+}

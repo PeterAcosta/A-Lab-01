@@ -1,0 +1,58 @@
+ARG IMAGE_NAME="node:alpine3.18"
+FROM ${IMAGE_NAME}
+ARG IMAGE_NAME
+
+# docker pull node:alpine3.18
+
+EXPOSE 80 443
+
+
+ENV THIS_IMAGE="${IMAGE_NAME}"
+ENV THIS_IMAGE_TAG="09"
+
+
+# Copia el archivo entrypoint.sh a la imagen
+COPY --chmod=0755 entrypoint.09-node-grunt.sh /tmp/entrypoint.sh
+
+
+RUN apk update && apk upgrade --available && sync && \
+    chmod +x /tmp/entrypoint.sh  && \
+    apk add neofetch && \
+    apk add mc && \
+    npm install -g grunt-cli && \
+    echo "PS1='{ \033[01;33m\]$IMAGE_NAME\[\033[00m\] } [\[\033[1;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]] \$ '" >> /root/.bashrc && \
+    echo "alias ll='ls -alF'" >> /root/.bashrc && \
+    echo "alias lk='ls -l'" >> /root/.bashrc && \
+    apk add figlet && \
+    echo $(date +"%Y.%m.%d - %T - Dockerfile Image Build : $IMAGE_NAME")  >> /home/docker.init.log
+
+
+
+
+# Define el comando de entrada predeterminado
+# ENTRYPOINT ["/tmp/entrypoint.sh"]
+
+# Define el comando predeterminado si no se proporciona ninguno al iniciar el contenedor
+CMD ["/bin/bash"] 
+
+
+# ENTRYPOINT ["docker-entrypoint.sh"]
+# CMD ["node"]
+
+
+# --------------------------------------------------------------------------------------------
+
+# 09-image-node
+# 09-node
+
+# build:
+# docker build --tag 09-image-node -f Dockerfile.09-node .
+# docker history -H 09-image-node --no-trunc
+
+# run:
+# docker run --name 09-node 09-image-node
+# docker exec -ti 09-node bash
+# docker exec -ti 09-node sh
+
+# remove container & image:
+# docker rm -f 09-node && docker rmi 09-image-node

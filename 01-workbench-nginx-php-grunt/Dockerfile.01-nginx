@@ -1,0 +1,69 @@
+ARG IMAGE_NAME="nginx:1.25.2-bookworm"
+FROM ${IMAGE_NAME}
+ARG IMAGE_NAME
+
+#docker pull nginx:1.25.2-bookworm        (bookworm = Debian 12)
+
+# EXPOSE 80 443 9000
+
+ENV THIS_IMAGE="${IMAGE_NAME}"
+ENV THIS_IMAGE_TAG="01"
+ENV TZ=America/Argentina/Buenos_Aires
+
+
+## include & Entrypoint & .htpasswd
+COPY resources/01-nginx/include /x-include/
+COPY resources/.htpasswd /x-include/.htpasswd
+COPY --chmod=0755 entrypoint.01-nginx.sh /usr/local/bin/entrypoint.sh 
+
+
+RUN apt-get update && apt-get install -y nano mc cron logrotate apache2-utils
+
+RUN mkdir -m 755 /var/www && \ 
+    mv /etc/crontab /etc/crontab.original.bak && \
+    cp /x-include/etc--crontab.custom  /etc/crontab && \
+    mv /etc/logrotate.conf /etc/logrotate.conf.original.bak && \
+    cp /x-include/etc--logrotate.conf.custom /etc/logrotate.conf && \
+    mv /etc/logrotate.d/nginx /x-include/etc-logrotate.d--nginx.original.bak && \
+    cp /x-include/etc-logrotate.d--nginx.custom /etc/logrotate.d/nginx && \
+    mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.original.bak && \
+    cp /x-include/etc-nginx--nginx.conf.custom /etc/nginx/nginx.conf
+
+RUN apt-get update && apt-get upgrade -y && apt-get autoclean && \
+    apt-get autoremove && apt-get clean && \
+    echo "\n### Peter added :" >> /root/.bashrc && \
+    echo "PS1='{\033[01;33m\]$THIS_IMAGE_TAG $THIS_IMAGE\[\033[00m\]} [\[\033[1;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]] \$ '" >> /root/.bashrc && \ 
+    echo "alias ls='ls --color=auto' \nalias ll='ls -alF' \nalias lk='ls -l'" >> /root/.bashrc && \
+    echo $(date +"0 - %Y-%m-%d  %A  %T - Dockerfile : Image Build [ $THIS_IMAGE_TAG $IMAGE_NAME ]")  > '/tmp/00-nginx-docker-init.log'
+
+WORKDIR /
+
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["/bin/bash"] 
+
+
+
+
+
+# ---------------------------------------------------------------------
+# BUILD
+# image :       01-image-nginx
+# container :   01-nginx
+
+# build:
+# docker build --tag 01-image-nginx -f Dockerfile.01-nginx .
+# docker history -H 01-image-nginx --no-trunc
+
+# run:
+# docker run --name  01-nginx  01-image-nginx
+# docker exec -ti 01-nginx  bash
+
+# remove container & image:
+# docker rm -f 01-nginx && docker rmi 01-image-nginx
+# ---------------------------------------------------------------------
+# Copiar archivos originales a archive :
+# docker cp  01-nginx:/etc/nginx/nginx.conf  resources/01-nginx/archive/etc/nginx/nginx.conf
+# docker cp  01-nginx:/etc/nginx/conf.d/default.conf  resources/01-nginx/archive/etc/nginx/conf.d/default.conf
+# docker cp  01-nginx:/etc/crontab  resources/01-nginx/archive/etc/crontab
+# docker cp  01-nginx:/etc/logrotate.conf  resources/01-nginx/archive/etc/logrotate.conf
+# docker cp  01-nginx:/etc/logrotate.d/nginx  resources/01-nginx/archive/etc/logrotate.d/nginx

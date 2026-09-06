@@ -1,0 +1,69 @@
+ARG IMAGE_NAME="php:8.2.9-fpm-bookworm"
+FROM ${IMAGE_NAME}
+ARG IMAGE_NAME
+
+
+# docker pull php:8.2.9-fpm-bookworm
+
+ENV THIS_IMAGE="${IMAGE_NAME}"
+ENV THIS_IMAGE_TAG="02"
+ENV TZ=America/Argentina/Buenos_Aires
+
+
+# EXPOSE 9000
+
+## include & Entrypoint & scripts
+COPY resources/02-php/include /x-include/
+COPY --chmod=0755 entrypoint.02-php.sh /usr/local/bin/entrypoint.sh 
+
+
+RUN apt-get update && \
+    apt-get install -y nano mc cron logrotate && \
+    docker-php-ext-install opcache && docker-php-ext-enable opcache 
+#   docker-php-ext-install mysqli && docker-php-ext-enable mysqli && \
+#   docker-php-ext-install mysqli opcache && docker-php-ext-enable mysqli opcache
+
+
+
+RUN mkdir -m 1777 "/tmp/php_upload_tmp_dir" && \
+    mv /etc/crontab /etc/crontab.original.bak && \
+    cp /x-include/etc--crontab.custom  /etc/crontab && \
+    mv /etc/logrotate.conf /etc/logrotate.conf.original.bak && \
+    cp /x-include/etc--logrotate.conf.custom /etc/logrotate.conf && \
+    echo "\n### Peter added :" >> /root/.bashrc && \
+    echo "PS1='{\033[01;33m\]$THIS_IMAGE_TAG $THIS_IMAGE\[\033[00m\]} [\[\033[1;31m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]] \$ '" >> /root/.bashrc && \ 
+    echo "alias ls='ls --color=auto' \nalias ll='ls -alF' \nalias lk='ls -l'" >> /root/.bashrc && \
+    echo $(date +"0 - %Y-%m-%d  %A  %T - Dockerfile : Image Build [ $THIS_IMAGE_TAG $IMAGE_NAME ]")  > '/tmp/00-php-8-fpm-docker-init.log'
+
+
+
+WORKDIR /
+
+ENTRYPOINT ["entrypoint.sh"]
+CMD ["/bin/bash"] 
+
+# CMD ["php-fpm"]
+
+
+
+
+# ---------------------------------------------------------------------
+# BUILD
+# image :       02-image-php
+# container :   02-php
+
+# build:
+# docker build --tag 02-image-php -f Dockerfile.02-php .
+# docker history -H 02-image-php --no-trunc
+
+# run:
+# docker run --name  02-php  02-image-php
+# docker exec -ti 02-php  bash
+
+# remove container & image:
+# docker rm -f 02-php && docker rmi 02-image-php
+# ---------------------------------------------------------------------
+# Copiar archivos originales a archive :
+# docker cp  02-php:/etc/crontab  resources/02-php/archive/etc/crontab
+# docker cp  02-php:/etc/logrotate.conf  resources/02-php/archive/etc/logrotate.conf
+

@@ -1,0 +1,67 @@
+@charset "utf-8";
+/* CSS Document */
+
+html{
+    /* font-size: 62.5%; /*default es 16px*/
+    /* font-size: 20px; */
+}
+
+:root {
+    --color-background:#f8f8f8;
+    --color-text:#1f1f1f;
+    --color-link:#1f1f1f;
+    --color-link-hover: #3399ff;
+}
+
+* {padding:0;margin:0;box-sizing:border-box;}
+img {border:0}
+ul {list-style:none; }
+
+
+h1{font-size: 2.0rem;font-weight: 700;}
+h2{font-size: 1.8rem;font-weight: 300;}
+h3{font-size: 1.6rem;font-weight: 700;}
+h4{font-size: 1.4rem;font-weight: 700;}
+h5{font-size: 1.2rem;font-weight: 700;}
+p{font-size: 1rem;font-weight: 400;}
+
+
+
+/* ************************************************************************************************************************************** */
+body {
+    background-color:var(--color-background);
+    color:var(--color-text);
+    font-family: Roboto, sans-serif;
+    text-rendering: optimizeLegibility;
+    font-weight: normal;
+    /* font-size: 12px; */
+    /* line-height: 1.1em; */
+    min-width: 970px;
+    min-height: 910px;
+    padding: 0px 10px 0px 15px;
+    /* background-image:url(/cad-vectorial-drawings-images/light_pattern_3c-10.jpg) ; */
+    /* background-repeat: repeat; */
+}
+
+body a, body a:link, body a:visited {
+    text-decoration: none;
+    color: var(--color-link);
+}
+
+body a:hover {
+    text-decoration: underline;
+    color: var(--color-link-hover);
+}
+
+body a:active {
+    text-decoration: underline;
+}
+
+/* ************************************************************************************************************************************** */
+main {
+    /* background-color: #ffb5c0; */
+    display: block;
+    margin: 0px 0px 20px 208px;
+    min-height: 672px !important; 
+}
+
