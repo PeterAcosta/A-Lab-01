@@ -95,7 +95,7 @@ Los archivos editables se encuentran en `sources/`. El contenedor
 `09-node-grunt` ejecuta la tarea predeterminada de Grunt al iniciar y luego
 mantiene activo el modo `watch`.
 
-| Origen | Salida en `www/` | Procesamiento |
+| Origen | Salida en `./www/` | Procesamiento |
 | --- | --- | --- |
 | `sources/CSS/*.css` | `_test.min.css` y su mapa | Minificación con `cssmin` |
 | `sources/JS/*.js` | `_test.min.js` y su mapa | Concatenación/minificación con `uglify` |
