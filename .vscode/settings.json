@@ -10,6 +10,6 @@
 		}
 	],
 	"material-icon-theme.folders.associations": {
-		"docker-labs": "docker",
+		"vol-x-01-nginx-conf.d": "Ngrx-store",
 	},
 }

@@ -27,8 +27,7 @@ wipe: ## 			Arrasa con todo, cierra todo, borras las imagenes y borra los direct
 	sudo rm -R vol-02-var-log-php
 
 
-
-rebuild:  ## Detiene los contenedores, borra las imagens y recontruye todo
+rebuild:  ##              Detiene los contenedores, borra las imagens y recontruye todo
 	clear 
 	@echo $(C2a)"Deteniendo los contenedores:\n"$(LINE-1)$(C0)
 	docker-compose down
@@ -37,7 +36,8 @@ rebuild:  ## Detiene los contenedores, borra las imagens y recontruye todo
 	@echo  $(C2a)$(LINE-1)"\n Reconstruyendo imagenes y iniciando contenedores:"$(C0)
 	docker-compose up 
 
-rerun: ## Detiene los contenedores y los vuelve a ejecutar
+
+rerun: ##                 Detiene los contenedores y los vuelve a ejecutar
 	clear 
 	@echo $(C2a)"Deteniendo los contenedores:\n"$(LINE-1)$(C0)
 	docker-compose down
@@ -53,7 +53,7 @@ delete_all_volumes: ## 	Borra todos los volumenes
 	docker volume rm $$(docker volume ls -q)
 
 
-delete_all_directories: ## 	Borra todos los directorios
+delete_all_directories: ##Borra todos los directorios
 #	sudo rm -R v-03-mariadb-logs/
 #	sudo rm -R v-03-mariadb-backups/    
 
