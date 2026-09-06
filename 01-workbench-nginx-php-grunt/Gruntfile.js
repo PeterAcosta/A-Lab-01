@@ -213,7 +213,7 @@ module.exports = function(grunt) {
             },
             // functions
             phpmin_php_functions:{
-                files: ['Source/PHP-functions/*.php'],
+                files: ['source/PHP-functions/*.php'],
                 tasks: ['phpmin:php_functions']
             },
             concat_php_functions:{
@@ -222,7 +222,7 @@ module.exports = function(grunt) {
             },
             // classes
             phpmin_php_classes:{
-                files: ['Source/PHP-classes/*.php'],
+                files: ['source/PHP-classes/*.php'],
                 tasks: ['phpmin:php_classes']
             },
             concat_php_classes:{
@@ -231,7 +231,7 @@ module.exports = function(grunt) {
             },
             // scripts
             phpmin_php_scripts:{
-                files: ['Source/PHP-scripts/*.php'],
+                files: ['source/PHP-scripts/*.php'],
                 tasks: ['phpmin:php_scripts']
             },
             concat_php_scripts:{
