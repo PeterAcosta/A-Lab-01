@@ -268,7 +268,7 @@ module.exports = function(grunt) {
     // grunt.registerTask('buil', ['concat','phpmin','uglify','cssmin']);
 
     grunt.registerTask('default', ['verbosity','phpmin','concat','uglify','cssmin','watch']);
-    grunt.registerTask('buil', ['phpmin','concat','uglify','cssmin']);
+    grunt.registerTask('build', ['phpmin','concat','uglify','cssmin']);
 
 
 };
