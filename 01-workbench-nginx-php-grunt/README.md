@@ -49,7 +49,7 @@ comparten `./www`, mientras que el contenedor de Node/Grunt comparte
 - Docker Engine
 - Docker Compose v2 (`docker compose`)
 - `make` (opcional, para usar los comandos del `Makefile` incluido)
-- Una entrada local para `test.local`, por ejemplo en `/etc/hosts`:
+- Una entrada local para `test.local` en `/etc/hosts`:
 
   ```text
   127.0.0.1 test.local www.test.local
