@@ -10,7 +10,7 @@
   "author": "Peter",
   "license": "ISC",
   "devDependencies": {
-    "grunt": "^1.6.1",
+    "grunt": "^1.6.3",
     "grunt-combine": "^0.7.0",
     "grunt-concat-language": "0.0.0",
     "grunt-contrib-concat": "^2.1.0",

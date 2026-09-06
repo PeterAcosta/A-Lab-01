@@ -1,4 +1,4 @@
-<?php /*! test.local - v1.0 - 02-09-2023 */
+<?php /*! test.local - v1.0 - 06-09-2026 */
 
 // ------------------------------------------------------------------------- source: _auxiliar/zGrunt/PHP-functions/aux-1.php
 echo 'Hello world';

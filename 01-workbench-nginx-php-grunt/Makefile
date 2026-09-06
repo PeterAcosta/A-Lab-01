@@ -19,6 +19,10 @@ help: ## 			ayuda
 
 
 
+bake: ##                  Usa docker compose BAKE para construir y levantar los contenedores
+	COMPOSE_BAKE=true docker compose up -d
+
+
 wipe: ## 			Arrasa con todo, cierra todo, borras las imagenes y borra los directorios
 	docker-compose down 
 	docker rmi  $$(docker images -aq )
