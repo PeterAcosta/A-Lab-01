@@ -10,9 +10,9 @@ module.exports = function(grunt) {
     var JS_FILE='www/_test.min.js';
     var JS_MAP_FILE='www/_test.min.js.map';
 
-    var PHP_ORIGIN='sources/PHP/*.php'
-    var PHP_FILE='www/_test.php';
-
+    // var PHP_ORIGIN='sources/PHP/*.php'
+    // var PHP_FILE='www/_test.php';
+	var PHP_FUNCTIONS_FILE = 'www/_functions.php';
 
     // Project configuration. ------------------------------------------------------------------------------------------
     grunt.initConfig({
@@ -150,7 +150,7 @@ module.exports = function(grunt) {
                 },
                 src: '<%= auxiliar.path %>/PHP-functions/*.php',
                 // dest: 'www/_ceconet3.php'
-                dest: PHP_FILE
+                dest: PHP_FUNCTIONS_FILE
             },
 
             php_classes: {
