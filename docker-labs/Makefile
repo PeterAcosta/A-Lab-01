@@ -9,6 +9,15 @@ bake: ##        Usa docker compose BAKE para construir y levantar los contenedor
 	COMPOSE_BAKE=true docker compose up -d
 
 
+wipe: ## 			Arrasa con todo, cierra todo, borras las imagenes y borra los directorios
+	@ echo " "
+	@sudo -v
+	docker compose down 
+	docker rmi  $$(docker images -aq )
+#	docker volume rm $$(docker volume ls -q)
+#	sudo rm -R vol-01-var-log-nginx
+#	sudo rm -R vol-02-var-log-php
+
 
 show_me_all: ## me muestra las imagenes y los contenedores:
 	clear

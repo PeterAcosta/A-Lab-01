@@ -13,24 +13,33 @@ BLUE='\033[1;34m'
 
 while true; do
     # Obtener lista de contenedores corriendo (solo nombres)
-    mapfile -t CONTAINERS < <(docker ps --format '{{.Names}}')
+    # mapfile -t CONTAINERS < <(docker ps --format '{{.Names}}')
+	mapfile -t CONTAINERS < <(docker ps --format '{{.Names}}' | sort)
 
     if [ ${#CONTAINERS[@]} -eq 0 ]; then
         echo -e "${RED}No hay contenedores corriendo actualmente.${RESET}"
         exit 1
     fi
 
+
+
     echo -e "\n${BLUE}=======================================${RESET}"
     echo -e "${BOLD}  Contenedores Docker en ejecución${RESET}"
     echo -e "${BLUE}=======================================${RESET}"
     echo ""
 
-    for i in "${!CONTAINERS[@]}"; do
-        num=$((i + 1))
-        echo -e "${YELLOW}  ${num})${RESET} ${CONTAINERS[$i]}"
-    done
-	
-	echo -e "\n${BLUE}  x)${RESET} Salir\n"
+    # for i in "${!CONTAINERS[@]}"; do
+    #     num=$((i + 1))
+    #     echo -e "${YELLOW}  ${num})${RESET} ${CONTAINERS[$i]}"
+    # done
+
+	for i in "${!CONTAINERS[@]}"; do
+		num=$((i + 1))
+		printf "${YELLOW}  %2d)${RESET} %s\n" "$num" "${CONTAINERS[$i]}"
+	done
+
+
+	echo -e "\n${BLUE}   x)${RESET} Salir\n"
 
     # echo -e "${RESET}Elegí un contenedor para ingresar:${RESET}"
     read -rp "Elige un contenedor para ingresar: " opcion
