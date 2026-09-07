@@ -1,71 +1,76 @@
 #!/bin/bash
 
-if [ $# -eq 0 ]; then
-	echo -e " "
-    read -p "Por favor, ingresa un parámetro (1, 2 o 9): " input
-else
-    input=$1
-fi
+# Colores
+RESET='\033[0m'
+BOLD='\033[1m'
+GREEN='\033[1;32m'
+CYAN='\033[1;36m'
+YELLOW='\033[1;33m'
+RED='\033[1;31m'
+BLUE='\033[1;34m'
 
-if [ "$input" == "1" ] || [ "$input" == "01" ]; then
-    CONTAINER_NAME="01-nginx"
-    # Verificar si el contenedor está en ejecución
-    if [ "$(docker inspect -f '{{.State.Running}}' $CONTAINER_NAME 2>/dev/null)" == "true" ]; then
-        clear
-        echo -e "\nIngresando al contenedor $CONTAINER_NAME :"
-        docker exec -it $CONTAINER_NAME /bin/bash
-    else
-        # Mostrar mensaje de que el contenedor no está en ejecución
-        echo -e "\nEl contenedor $CONTAINER_NAME no está en ejecución.\n"
+# clear
+
+while true; do
+    # Obtener lista de contenedores corriendo (solo nombres)
+    mapfile -t CONTAINERS < <(docker ps --format '{{.Names}}')
+
+    if [ ${#CONTAINERS[@]} -eq 0 ]; then
+        echo -e "${RED}No hay contenedores corriendo actualmente.${RESET}"
+        exit 1
     fi
 
+    echo -e "\n${BLUE}=======================================${RESET}"
+    echo -e "${BOLD}  Contenedores Docker en ejecución${RESET}"
+    echo -e "${BLUE}=======================================${RESET}"
+    echo ""
 
-elif [ "$input" == "2" ] || [ "$input" == "02" ]; then
-    CONTAINER_NAME="02-php"
-    # Verificar si el contenedor está en ejecución
-    if [ "$(docker inspect -f '{{.State.Running}}' $CONTAINER_NAME 2>/dev/null)" == "true" ]; then
-        clear
-        echo -e "\nIngresando al contenedor $CONTAINER_NAME :"
-        docker exec -it $CONTAINER_NAME /bin/bash
-    else
-        # Mostrar mensaje de que el contenedor no está en ejecución
-        echo -e "\nEl contenedor $CONTAINER_NAME no está en ejecución.\n"
+    for i in "${!CONTAINERS[@]}"; do
+        num=$((i + 1))
+        echo -e "${YELLOW}  ${num})${RESET} ${CONTAINERS[$i]}"
+    done
+	
+	echo -e "\n${BLUE}  x)${RESET} Salir\n"
+
+    # echo -e "${RESET}Elegí un contenedor para ingresar:${RESET}"
+    read -rp "Elige un contenedor para ingresar: " opcion
+
+    # Salir
+    if [[ "$opcion" == "x" || "$opcion" == "X" ]]; then
+        echo -e "${CYAN}Saliendo...${RESET}\n"
+        exit 0
     fi
 
-
-elif [ "$input" == "3" ] || [ "$input" == "03" ]; then
-    CONTAINER_NAME="03-mariadb"
-    # Verificar si el contenedor está en ejecución
-    if [ "$(docker inspect -f '{{.State.Running}}' $CONTAINER_NAME 2>/dev/null)" == "true" ]; then
+    # Validar que sea un número
+    if ! [[ "$opcion" =~ ^[0-9]+$ ]]; then
+        echo -e "${RED}Opción inválida. Presioná Enter para continuar...${RESET}"
+        read -r
         clear
-        echo -e "\nIngresando al contenedor $CONTAINER_NAME :"
-        docker exec -it $CONTAINER_NAME /bin/bash
-    else
-        # Mostrar mensaje de que el contenedor no está en ejecución
-        echo -e "\nEl contenedor $CONTAINER_NAME no está en ejecución.\n"
+        continue
     fi
 
-
-elif [ "$input" == "9" ] || [ "$input" == "09" ]; then
-    CONTAINER_NAME="09-gulp"
-    # Verificar si el contenedor está en ejecución
-    if [ "$(docker inspect -f '{{.State.Running}}' $CONTAINER_NAME 2>/dev/null)" == "true" ]; then
+    # Validar rango
+    if [ "$opcion" -lt 1 ] || [ "$opcion" -gt "${#CONTAINERS[@]}" ]; then
+        echo -e "${RED}Número fuera de rango. Presioná Enter para continuar...${RESET}"
+        read -r
         clear
-        echo -e "\nIngresando al contenedor $CONTAINER_NAME :"
-        docker exec -it $CONTAINER_NAME /bin/bash
-    else
-        # Mostrar mensaje de que el contenedor no está en ejecución
-        echo -e "\nEl contenedor $CONTAINER_NAME no está en ejecución.\n"
+        continue
     fi
 
+    CONTAINER_NAME="${CONTAINERS[$((opcion - 1))]}"
 
+    echo -e "${CYAN}Ingresando al contenedor: ${BOLD}${CONTAINER_NAME} : \n${RESET}"
 
+    # Intentar bash, si no existe usar sh
+    if docker exec -it "$CONTAINER_NAME" /bin/bash 2>/dev/null; then
+        :
+    else
+        echo -e "${YELLOW}bash no disponible, probando con sh...${RESET}"
+        docker exec -it "$CONTAINER_NAME" /bin/sh
+    fi
 
-
-else
-    echo -e "\nNo se reconoce el parámetro proporcionado.\n"
-    exit 1
-fi
-
-
-
+    echo ""
+    echo -e "${CYAN}Saliste del contenedor '${CONTAINER_NAME}'. Volviendo al menú...${RESET}"
+    sleep 1
+    clear
+done

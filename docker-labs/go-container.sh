@@ -33,7 +33,7 @@ while true; do
 	echo -e "\n${BLUE}  x)${RESET} Salir\n"
 
     # echo -e "${RESET}Elegí un contenedor para ingresar:${RESET}"
-    read -rp "Elige un contenedor para ingresar:" opcion
+    read -rp "Elige un contenedor para ingresar: " opcion
 
     # Salir
     if [[ "$opcion" == "x" || "$opcion" == "X" ]]; then
