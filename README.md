@@ -55,21 +55,17 @@ contenedores se identifican con nombres y etiquetas definidos en Compose.
 
 ### Scripting Linux bash:
 
-- `ls-users.sh`: menú interactivo para listar usuarios y grupos a partir de
-  `/etc/passwd` y `/etc/group`, ordenados por UID/GID o nombre, incluyendo los
-  grupos asociados a cada usuario.
-- `disk-space.sh`: muestra los diez directorios que más espacio ocupan en el
-  directorio actual.
-- `status.sh`: presenta el estado de Apache y MySQL y las versiones de PHP,
-  Node.js y npm disponibles en el anfitrión.
-- `ls-colors.sh`: demuestra códigos ANSI de color para Bash.
-- `ls-docker.sh`: resume uptime, disco, memoria, estadísticas, contenedores,
-  imágenes, IPs, reinicios, volúmenes y redes Docker.
-- `ls-volumes.sh`: lista volúmenes Docker, proyecto, contenedores asociados,
-  punto de montaje y tamaño aproximado en MB.
-- `ssh timeout.txt`: fragmento de configuración SSH con
-  `ServerAliveInterval 60`; (no es un script ejecutable).
-- `clean-disk.sh`: limpieza de disco para Ubuntu (adaptado para tu servidor AWS)
+* `clean-disk.sh`: script de mantenimiento y limpieza del sistema raíz en Ubuntu que calcula el espacio antes y después del proceso, actualizando e inspeccionando paquetes de `apt` (limpieza de caché y huérfanos), vaciando la papelera y miniaturas de usuario, liberando logs de `systemd` y eliminando archivos comprimidos o antiguos en `/var/log`.
+* `disk-space.sh`: script sencillo que analiza y muestra el uso de espacio en disco del directorio actual hasta una profundidad de 1 nivel, listando los 10 elementos que más espacio ocupan ordenados de forma descendente y legible.
+* `go-container.sh`: menú interactivo dinámico que detecta los contenedores Docker en ejecución y permite al usuario seleccionar uno mediante un menú numerado para acceder interactivamente a su terminal shell (intentando primero `/bin/bash` y cayendo a `/bin/sh` si no está disponible).
+* `go-container-old.sh`: script legacy para acceder de forma rápida por parámetro o selección directa (1, 2, 3 u 9) a la consola interactiva (`/bin/bash`) de contenedores predefinidos estáticamente (`01-nginx`, `02-php`, `03-mariadb` o `09-gulp`), verificando previa ejecución si se encuentran activos.
+* `ls-colors.sh`: script utilitario que define y muestra en pantalla una muestra visual de la paleta de variables de colores ANSI (normales y en negrita) empleadas para formatear y dar estilo a la salida de otros scripts Bash.
+* `ls-docker.sh`: panel de monitoreo y diagnóstico completo de Docker en consola que reporta el tiempo de actividad del sistema, consumo de CPU/Memoria/Disco, estado y estadísticas en tiempo real de contenedores (activos y detenidos), imágenes almacenadas, direccionamiento IP por red, así como detalle de volúmenes e infraestructura de redes creadas.
+* `ls-users.sh`: menú interactivo para listar usuarios y grupos a partir de `/etc/passwd` y `/etc/group`, ordenados por UID/GID o nombre, incluyendo los grupos asociados a cada usuario.
+* `ls-volumes.sh`: script de inspección detallada que requiere privilegios elevados (`sudo`) para listar todos los volúmenes de Docker, mostrando su nombre, controlador, proyecto asociado, contenedor conectado, punto de montaje e identificando el tamaño real en megabytes (MB) que ocupa cada volumen en el disco.
+* `ssh timeout.txt`: fragmento de configuración para `/etc/ssh/ssh_config` que establece la directiva `ServerAliveInterval 60`, la cual envía paquetes de mantenimiento de conexión cada 60 segundos para evitar desconexiones por inactividad en sesiones SSH.
+* `status.sh`: script de diagnóstico rápido del entorno web local que imprime el estado de los servicios `apache2` y `mysql`, junto con las versiones instaladas de `php`, `node.js` y `npm`.
+
 
 
 
