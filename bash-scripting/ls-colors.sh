@@ -2,7 +2,6 @@
 # Pedro Javier Acosta : peteracosta@gmail.com
 # my color codes for my bash files @ debian-ubuntu-mint 
 
-
 # my color codes :
 
 C0="\e[0m"       # default

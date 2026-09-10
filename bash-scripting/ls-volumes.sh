@@ -27,9 +27,6 @@ LINE_1="$C4a--------------------------------------------------------------------
 clear
 sudo true
 
-
-
-
 ### VOLUMES WITH SIZE #######################################
 echo -e $LINE_1
 echo -e "${C4b}docker volume ls   (with size in MB)${C0}"

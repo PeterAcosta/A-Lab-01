@@ -42,7 +42,7 @@ echo " "
 read -p " Enter an option ( 0 to exit )  : " option > /dev/null
 echo " you chose: $option \n \n"
 
- 
+
 
 
 if [ "$option" = "1" ]

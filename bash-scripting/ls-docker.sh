@@ -26,7 +26,6 @@ LINE_1="$C4a--------------------------------------------------------------------
 LINE_2="$C4a- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -$C0"
 
 
-
 DOCKER_PS_AQ=$(docker ps -aq)
 DOCKER_PS_RUNNING=$(docker ps -q --filter status=running )
 DOCKER_PS_EXITED=$(docker ps  -q --filter status=exited  )
@@ -81,8 +80,6 @@ echo -e $LINE_2
 echo -e "${C4b}docker ps -a  $C9a" 
 docker ps -a | cut -c1-$(tput cols)
 echo -e -n $C0
-
-
 
 
 
